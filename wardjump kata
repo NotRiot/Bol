@@ -1,0 +1,76 @@
+function KatarinaMenu()
+
+
+KatarinaMenu = scriptConfig("Katarina - The Sinister Blade", "Katarina")
+---
+KatarinaMenu:addSubMenu("[" .. myHero.charName .. " - Misc Settings]", "misc")
+KatarinaMenu.misc:addParam("wardJumpKey", "Ward Jump Hotkey (G)", SCRIPT_PARAM_ONKEYDOWN, false, 71)
+---
+function wardJump(x, y)
+	--->
+		if SkillE.ready then
+			local Jumped = false
+			local WardDistance = 300
+			for _, ally in pairs(allyHeroes) do
+				if ValidTarget(ally, SkillE.range, false) and ally ~= nil then
+					if GetDistanceSqr(ally, mousePos) <= WardDistance*WardDistance then
+						CastSpell(_E, ally)
+						Jumped = true
+						SkillWard.lastJump = GetTickCount() + 2000
+					end
+				end
+			end
+			for _, minion in pairs(allyMinions.objects) do
+				if ValidTarget(minion, SkillE.range, false) and minion ~= nil then
+					if GetDistanceSqr(minion, mousePos) <= WardDistance*WardDistance then
+						CastSpell(_E, minion)
+						Jumped = true
+						SkillWard.lastJump = GetTickCount() + 2000
+					end
+				end
+			end
+			for _, minion in pairs(enemyMinions.objects) do
+				if ValidTarget(minion, SkillE.range, false) and minion ~= nil then
+					if GetDistanceSqr(minion, mousePos) <= WardDistance*WardDistance then
+						CastSpell(_E, minion)
+						Jumped = true
+						SkillWard.lastJump = GetTickCount() + 2000
+					end
+				end
+			end
+			if next(Wards) ~= nil then
+				for i, obj in pairs(Wards) do 
+					if obj.valid then
+						MousePos = getMousePos()
+						if GetDistanceSqr(obj, MousePos) <= WardDistance*WardDistance then
+							CastSpell(_E, obj)
+							Jumped = true
+							SkillWard.lastJump = GetTickCount() + 2000
+						 end
+					end
+				end
+			end
+			
+			if not Jumped and GetTickCount() >= SkillWard.lastJump then
+				if Items.TrinketWard.ready then
+					SkillWard.itemSlot = ITEM_7
+				elseif Items.RubySightStone.ready then
+					SkillWard.itemSlot = rstSlot
+				elseif Items.SightStone.ready then 
+					SkillWard.itemSlot = ssSlot
+				elseif Items.SightWard.ready then
+					SkillWard.itemSlot = swSlot
+				elseif Items.VisionWard.ready then
+					SkillWard.itemSlot = vwSlot
+				end
+				
+				if SkillWard.itemSlot ~= nil then
+					CastSpell(SkillWard.itemSlot, x, y)
+					Jumped = true
+					SkillWard.lastJump = GetTickCount() + 2000
+					SkillWard.itemSlot = nil
+				end
+			end
+		end
+	---<
+end
