@@ -1,13 +1,8 @@
-function KatarinaMenu()
+this is a copy of SInister blade Katarina, 
+im trying to get this to work, 
 
+and reffs will be given to the rightfull owner
 
-KatarinaMenu = scriptConfig("Katarina - The Sinister Blade", "Katarina")
----
-KatarinaMenu:addSubMenu("[" .. myHero.charName .. " - Misc Settings]", "misc")
-KatarinaMenu.misc:addParam("wardJumpKey", "Ward Jump Hotkey (G)", SCRIPT_PARAM_ONKEYDOWN, false, 71)
----
-function wardJump(x, y)
-	--->
 		if SkillE.ready then
 			local Jumped = false
 			local WardDistance = 300
